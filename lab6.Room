@@ -27,7 +27,7 @@ public class Room {
 
     public static void main(String[] args) {
         Room obj1 = new Room();
-        Room obj = new Room(905, "hall", 127.5F, true);
+        Room obj = new Room(1212, "hall", 156.5F, true);
         obj.displayData();
 
     }
