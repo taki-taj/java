@@ -1,0 +1,156 @@
+package bankingapplication;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+abstract class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public abstract void displayDetails();
+}
+
+class Student extends Person {
+    private int rollNumber;
+
+    public Student(String name, int age, int rollNumber) {
+        super(name, age);
+        this.rollNumber = rollNumber;
+    }
+
+    public int getRollNumber() {
+        return rollNumber;
+    }
+
+    @Override
+    public void displayDetails() {
+        System.out.println("Name: " + getName());
+        System.out.println("Age: " + getAge());
+        System.out.println("Roll Number: " + rollNumber);
+        System.out.println("--------------------");
+    }
+}
+
+interface Staff {
+    void displaySalary();
+}
+
+class Teacher extends Person implements Staff {
+    private double salary;
+
+    public Teacher(String name, int age, double salary) {
+        super(name, age);
+        this.salary = salary;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public void displayDetails() {
+        System.out.println("Name: " + getName());
+        System.out.println("Age: " + getAge());
+        System.out.println("Salary: $" + salary);
+        System.out.println("--------------------");
+    }
+
+    @Override
+    public void displaySalary() {
+        System.out.println("Salary: $" + salary);
+    }
+}
+
+class School {
+    private ArrayList<Person> people;
+
+    public School() {
+        people = new ArrayList<>();
+    }
+
+    public void addPerson(Person person) {
+        people.add(person);
+    }
+
+    public void displayAllDetails() {
+        for (Person person : people) {
+            person.displayDetails();
+        }
+    }
+}
+
+public class SchoolManagementProject {
+    public static void main(String[] args) {
+        School school = new School();
+
+        // Adding sample students and teachers
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Enter the number of students to add: ");
+        int numStudents = input.nextInt();
+
+        for (int i = 0; i < numStudents; i++) {
+            System.out.println("Enter student name: ");
+            String studentName = input.next();
+
+            System.out.println("Enter student age: ");
+            int studentAge = input.nextInt();
+
+            System.out.println("Enter student roll number: ");
+            int studentRollNumber = input.nextInt();
+
+            school.addPerson(new Student(studentName, studentAge, studentRollNumber));
+        }
+
+        System.out.println("Enter the number of teachers to add: ");
+        int numTeachers = input.nextInt();
+
+        for (int i = 0; i < numTeachers; i++) {
+            System.out.println("Enter teacher name: ");
+            String teacherName = input.next();
+
+            System.out.println("Enter teacher age: ");
+            int teacherAge = input.nextInt();
+
+            System.out.println("Enter teacher salary: ");
+            double teacherSalary = input.nextDouble();
+
+            school.addPerson(new Teacher(teacherName, teacherAge, teacherSalary));
+        }
+
+        input.close();
+
+        // Displaying all details
+        System.out.println("All Details:");
+        school.displayAllDetails();
+
+        // Handling exception while reading from file
+        try {
+            File file = new File("data.txt");
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                System.out.println(line);
+            }
+
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+ }
+}
+}
